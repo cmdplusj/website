@@ -1,0 +1,21 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %}Complete Bio{% endblock %}
+
+{% block content %}
+<link href="{% static 'main/css/multistep.css' %}" rel="stylesheet" type="text/css">
+<body style="background-color: #FDB748;">
+  <form method="post" id="bioform">
+    <h1>Tell Us a bit About Yourself</h1>
+    <p style="font-size: 12px;color: darkgray;">This will be displayed on your card on the browse page.</p>
+    {% csrf_token %}
+    <p>{{ form.bio }}</p>
+    <p>{{ form.bio.errors }}</p>
+    <div style="overflow:auto;">
+      <div style="float:right;">
+        <button type="submit">Submit</button>
+      </div>
+    </div>
+  </form>
+</body>
+{% endblock %}

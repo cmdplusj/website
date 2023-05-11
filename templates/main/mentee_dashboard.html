@@ -1,0 +1,40 @@
+{% extends 'main/base.html' %}
+{% load tz %}
+{% block title %}Mentee Dashboard{% endblock %}
+
+{% block content %}
+    
+    {% if user.is_authenticated %}
+        <a href='/logout'>logout</a><br>
+        {% if user.is_mentee %}
+            <h2>Hello, Mentee</h2>
+            <p><a href="{% url 'mentee_edit_profile' %}">Edit Profile</a></p><br>
+            {{ user.email }}<br>
+            {{ user.first_name }} {{ user.last_name }}<br>
+            {% for t in user.menteeprofile.tag.all %}
+                {{ t }}  
+            {% endfor %}<br><br>
+            <h4>Sent Requests:</h4>
+            {% for a in x %}
+                {% if a.accepted_by_mentor is False %}
+                    {{ a.mentor.mentor_first_name }}  {{ a.mentor.mentor_last_name }} <br> 
+                    {{ a.mentor.url }}<br><br>
+                {% endif %}
+            {% endfor %}
+            <h4>Scheduled Appointments:</h4>
+            {% for a in x %}
+                {% if a.accepted_by_mentor is True %}
+                    {{ a.mentor.mentor_first_name }}  {{ a.mentor.mentor_last_name }} <br>
+                    {{ a.mentor.url }}<br>
+                    {% localtime on %} 
+                        {{ a.datetime }}<br><br>
+                    {% endlocaltime %}
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <p>Not allowed to access Mentee dashboard.</p>
+        {% endif %}      
+    {% else %}
+        <p>Not allowed to access Mentee dashboard</p>
+    {% endif %}
+{% endblock %}

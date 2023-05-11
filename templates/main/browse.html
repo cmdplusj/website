@@ -1,0 +1,357 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %}Browse{% endblock %}
+{% block style %}
+<style>
+    .card-browse{
+        padding-left: 4%;
+        padding-right: 4%;
+    }
+    @media (max-width : 1024px) { 
+        .card-browse {
+        margin: auto;
+        }
+    }
+</style>
+{% endblock %}
+{% block content %}
+    <link href="{% static 'main/css/new-age.css' %}" rel="stylesheet" type="text/css">
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+        <div class="container">
+            <a class="navbar-brand js-scroll-trigger" href="/"><img style="width:200px;"  src="{% static 'main/img/home/navbar-logo.png' %}" alt="Logo"></a>
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fa fa-bars" style="font-size: 30px;"></i>
+            </button>
+            {% if user.is_authenticated %}
+                {% if user.is_mentee %}
+                    <div class="collapse navbar-collapse" id="navbarResponsive">
+                        <ul class="navbar-nav ml-auto">
+                            <!-- <li class="nav-item">
+                                <a style="float: right;" class="nav-link" href="{% url 'mentee_dashboard' %}">Dashboard</a>
+                            </li> -->
+                            <li class="nav-item active">
+                                <a style="float: right;" class="nav-link" href="{% url 'browse' %}">Browse</a>
+                            </li>
+                            <li class="nav-item">
+                                <a style="float: right;" class="nav-link" href="{% url 'resources' %}">Resources</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a style="float: right;" class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Hi, {{ user.menteeprofile.mentee_first_name }}
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a style="float: right;" class="dropdown-item" href="{% url 'mentee_edit_profile' %}">Edit Profile</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a style="float: right;" class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                                </div>
+                                <!-- <a style="float: right;" class="nav-link" href="{% url 'mentee_dashboard' %}">Hi, {{ user.menteeprofile.mentee_first_name }}</a> -->
+                            </li>
+                        </ul>
+                    </div>  
+                {% endif %}
+                {% if user.is_mentor %}
+                    <div class="collapse navbar-collapse" id="navbarResponsive">
+                        <ul class="navbar-nav ml-auto">
+                            <li class="nav-item">
+                                <a style="float: right;" class="nav-link" href="{% url 'mentor_dashboard' %}">Dashboard</a>
+                            </li>
+                            <li class="nav-item active">
+                                <a style="float: right;" class="nav-link" href="{% url 'browse' %}">Browse</a>
+                            </li>
+                            <li class="nav-item">
+                                <a style="float: right;" class="nav-link" href="{% url 'resources' %}">Resources</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a style="float: right;" class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Hi, {{ user.mentorprofile.mentor_first_name }}
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a style="float: right;" class="dropdown-item" href="{% url 'mentor_edit_profile' %}">Edit Profile</a>
+                                    {% if user.mentorprofile.opt_out %}
+                                        <a style="float: right;" class="dropdown-item" href="{% url 'opt_in' %}">Opt In</a>
+                                    {% else %}
+                                        <a style="float: right;" class="dropdown-item" href="{% url 'opt_out' %}">Opt Out</a>
+                                    {% endif %}
+                                    <div class="dropdown-divider"></div>
+                                    <a style="float: right;" class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div> 
+                {% endif %}
+            {% else %}
+                <div class="collapse navbar-collapse justify-content-center" id="navbarResponsive">
+                    <ul class="navbar-nav ">
+                        <li class="nav-item">
+                            <a style="float: right;" class="nav-link" href="{% url 'home' %}">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a style="float: right;" class="nav-link" href="{% url 'resources' %}">Resources</a>
+                        </li>
+                        <li class="nav-item">
+                            <a style="float: right;" class="nav-link" href="{% url 'about' %}">About Us</a>
+                        </li>
+                        <li class="nav-item navbar-button-links">
+                            <a style="float: right;" class="nav-link"  href="{% url 'login' %}">Login</a>
+                        </li>
+                        <li class="nav-item navbar-button-links">
+                            <a style="float: right;" class="nav-link"  href="{% url 'signup' %}">Sign Up</a>
+                        </li>
+                    </ul>
+                </div>
+                <a href="{% url 'login' %}" class="navbar-buttons"><button style="color:#4752E8; border-color:#4752E8; background: white;">Login</button></a>
+                <a href="{% url 'signup' %}" class="navbar-buttons"><button>Sign Up</button></a>
+            {% endif %}
+        </div>
+    </nav>
+    <div style="padding-top: 100px;">
+        <h1 style="text-align: center;">Discover Mentors</h1>
+        {% if user.is_authenticated %}
+            {% if user.is_mentee %}
+                <h3 style="text-align: center;">Our Reccomendations</h3><br>
+                <div class="container">
+                    <div class="row" id="recommended_mentor_list">
+                        {% for recc in recommendation %}
+                        <div class="card-browse">
+                            <div class="mentor-card card">
+                                <p class = "mentor_design_field" style="text-transform: uppercase;font-size: 14px;">{{recc.mentor.field_of_design}}</p>
+                                <p style="font-weight: bold;font-size: 18px;">{{recc.mentor.mentor_first_name}} {{recc.mentor.mentor_last_name}}</p>
+                                <p style="color:rgba(0, 0, 0, 0.36);font-size: 14px;">{{recc.mentor.place_of_work}}</p>
+                                <p style="font-size: 14px;overflow: hidden;display: -webkit-box; -webkit-line-clamp: 7; -webkit-box-orient: vertical;">{{ recc.mentor.bio }}</p>
+                                <a href="{% url 'mentor_profile' mentor_name=recc.mentor.mentor_first_name mentor_id=recc.mentor.id %}" style="color: #8D98A3; font-size: 14px;" target="_blank">Read More ↗</a><br>
+                                {% if recc.mentor.id in mentor_id_list %}
+                                    <p class="book-time-a"><b>Requested!</b></p>
+                                {% else %}
+                                    <a href='/browse/send/invitation/{{ recc.mentor.id }}'  class="book-time-a"><button class="book-time">Book Time</button></a>
+                                {% endif %} 
+                                <a href='{{recc.mentor.url}}' class="book-time-url"><button class="book-time-globe"><i class="fa fa-link" aria-hidden="true"></i></button></a>
+                                {% if recc.mentor.social_url %}
+                                    <a href='{{recc.mentor.social_url}}' class="book-time-social-url"><button class="book-time-globe"><i class="fa fa-link" aria-hidden="true"></i></button></a>
+                                {% endif %}
+                            </div>    
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}        
+        {% endif %}
+    </div>
+    <div class="row">
+        <div class="col-md-12 mx-auto">
+            <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search Anything.">
+        </div> 
+    </div>
+    <div class="row">
+        <div class="col-md-12 mx-auto" style="padding-top:1px;padding-bottom:1px;">
+            <a data-toggle="collapse" data-target="#design_field_radio" style="font-weight: bold; cursor: pointer;">
+                <div class="filter">
+                    Filter by Design Field<i class="fa fa-plus expand-plus" aria-hidden="true"></i>
+                </div>
+            </a>
+            <div class="collapse options-filter" id="design_field_radio">
+                <ul class="ks-cboxtags">
+                    <li><input id="radio_1" type="radio" name="design_field" onclick="myFunction()" value="All" checked><label for="radio_1">All</label></li>
+                    <li><input id="radio_2" type="radio" name="design_field" onclick="myFunction()" value="UX Design"><label for="radio_2">UX Design</label></li>
+                    <li><input id="radio_3" type="radio" name="design_field" onclick="myFunction()" value="Graphic Design"><label for="radio_3">Graphic Design</label></li>
+                    <li><input id="radio_4" type="radio" name="design_field" onclick="myFunction()" value="Animation & Motion Graphics"><label for="radio_4">Animation & Motion Graphics</label></li>
+                    <li><input id="radio_5" type="radio" name="design_field" onclick="myFunction()" value="Film & Videography"><label for="radio_5">Film & Videography</label></li>
+                    <li><input id="radio_6" type="radio" name="design_field" onclick="myFunction()" value="Industrial Design"><label for="radio_6">Industrial Design</label></li>
+                    <li><input id="radio_7" type="radio" name="design_field" onclick="myFunction()" value="Fashion & Textiles"><label for="radio_7">Fashion & Textiles</label></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 mx-auto" style="padding-top:1px;padding-bottom:1px;">
+            <a data-toggle="collapse" data-target="#help_tags_checkboxes" style="font-weight: bold; cursor: pointer;">
+                <div class="filter">
+                    Filter by Conversation Starters <i class="fa fa-plus expand-plus" aria-hidden="true"></i>
+                </div>
+            </a>    
+            <div class="collapse show options-filter" id="help_tags_checkboxes">
+                <ul class="ks-cboxtags">
+                    <li><input id="checkbox_1" type="checkbox" name="help_tags" onclick="myFunction()" value="Pursuing higher studies"/><label for="checkbox_1">Pursuing higher studies</label></li>
+                    <li><input id="checkbox_2" type="checkbox" name="help_tags" onclick="myFunction()" value="Portfolio reviews"/><label for="checkbox_2">Portfolio reviews</label></li>
+                    <li><input id="checkbox_3" type="checkbox" name="help_tags" onclick="myFunction()" value="Seeking career guidance"/><label for="checkbox_3">Seeking career guidance</label></li>
+                    <li><input id="checkbox_4" type="checkbox" name="help_tags" onclick="myFunction()" value="Freelancing"/><label for="checkbox_4">Freelancing</label></li>
+                    <li><input id="checkbox_5" type="checkbox" name="help_tags" onclick="myFunction()" value="Navigating design school"/><label for="checkbox_5">Navigating design school</label></li>
+                    <li><input id="checkbox_6" type="checkbox" name="help_tags" onclick="myFunction()" value="Applying for jobs"/><label for="checkbox_6">Applying for jobs</label></li>
+                    <li><input id="checkbox_7" type="checkbox" name="help_tags" onclick="myFunction()" value="Developing design skills"/><label for="checkbox_7">Developing design skills</label></li>
+                    <li><input id="checkbox_8" type="checkbox" name="help_tags" onclick="myFunction()" value="Starting your journey into design"/><label for="checkbox_8">Starting your journey into design</label></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <br><br>
+    <div class="container">
+        <div class="row" id="mentor_list">
+            {% for mentor in mentors %}
+                {% if not mentor.opt_out %}
+                    <div class="card-browse">
+                        <div class="mentor-card card">
+                            <p class = "mentor_design_field" style="text-transform: uppercase;font-size: 14px;">{{mentor.field_of_design}}</p>
+                            <p style="font-weight: bold;font-size: 18px;">{{mentor.mentor_first_name}} {{mentor.mentor_last_name}}</p>
+                            <p style="color:rgba(0, 0, 0, 0.36);font-size: 14px;">{{mentor.place_of_work}}</p>
+                            <p style="font-size: 14px;overflow: hidden;display: -webkit-box; -webkit-line-clamp: 7; -webkit-box-orient: vertical;">{{ mentor.bio }}</p>                        
+                            <p class = "mentor_help_tags" style="display: none;">{% for t in mentor.tag.all %}
+                                {{ t }}  
+                            {% endfor %}<p>
+                            <a href="{% url 'mentor_profile' mentor_name=mentor.mentor_first_name mentor_id=mentor.id %}" style="color: #8D98A3;font-size: 14px;" target="_blank">Read More ↗</a><br>
+                            {% if user.is_authenticated %}
+                                {% if user.is_mentee %}
+                                    {% if mentor.id in mentor_id_list %}
+                                        <p class="book-time-a"><b>Requested!</b></p>
+                                    {% else %}
+                                        <a href='/browse/send/invitation/{{ mentor.id }}' class="book-time-a"><button class="book-time">Book Time</button></a>
+                                    {% endif %}
+                                {% endif %}
+                            {% endif %}
+                            <a href='{{mentor.url}}' class="book-time-url"><button class="book-time-globe"><i class="fa fa-link" aria-hidden="true"></i></button></a>
+                            {% if mentor.social_url %}
+                            {% if 'facebook.com' in mentor.social_url %}
+                                <a href='{{mentor.social_url}}' class="book-time-social-url"><button class="book-time-globe"><i class="fa fa-facebook" aria-hidden="true"></i></button></a>
+                            {% elif 'fb.com' in mentor.social_url %}
+                                <a href='{{mentor.social_url}}' class="book-time-social-url"><button class="book-time-globe"><i class="fa fa-facebook" aria-hidden="true"></i></button></a>
+                            {% elif 'twitter.com' in mentor.social_url %}
+                                <a href='{{mentor.social_url}}' class="book-time-social-url"><button class="book-time-globe"><i class="fa fa-twitter" aria-hidden="true"></i></button></a>
+                                {% elif 'instagram.com' in mentor.social_url %}
+                                <a href='{{mentor.social_url}}' class="book-time-social-url"><button class="book-time-globe"><i class="fa fa-instagram" aria-hidden="true"></i></button></a>
+                                {% elif 'linkedin.com' in mentor.social_url %}
+                                <a href='{{mentor.social_url}}' class="book-time-social-url"><button class="book-time-globe"><i class="fa fa-linkedin" aria-hidden="true"></i></button></a>
+                            {% else %}
+                                <a href='{{mentor.social_url}}' class="book-time-social-url"><button class="book-time-globe"><i class="fa fa-link" aria-hidden="true"></i></button></a>
+                            {% endif %}
+                            {% endif %}    
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+            {% for mentor in mentors %}
+                {% if mentor.opt_out %}
+                    <div class="card-browse">
+                        <div class="mentor-card-opt-out card">
+                            <p class = "mentor_design_field" style="text-transform: uppercase;font-size: 14px;">{{mentor.field_of_design}}</p>
+                            <p style="font-weight: bold;font-size: 18px;">{{mentor.mentor_first_name}} {{mentor.mentor_last_name}}</p>
+                            <p style="color:rgba(0, 0, 0, 0.36);font-size: 14px;">{{mentor.place_of_work}}</p>
+                            <p style="font-size: 14px;overflow: hidden;display: -webkit-box; -webkit-line-clamp: 7; -webkit-box-orient: vertical;">{{ mentor.bio }}</p>                        
+                            <p class = "mentor_help_tags" style="display: none;">{% for t in mentor.tag.all %}
+                                {{ t }}  
+                            {% endfor %}<p>
+                            <a href="{% url 'mentor_profile' mentor_name=mentor.mentor_first_name mentor_id=mentor.id %}" style="color: #8D98A3;font-size: 14px;" target="_blank">Read More ↗</a><br>
+                            <a href="#" class="book-time-a"><button class="book-time" disabled style="font-size: 15px; height: 40px"><b>Unavailable</b></button></a>
+                            <a href='{{mentor.url}}' class="book-time-url"><button class="book-time-globe"><i class="fa fa-link" aria-hidden="true"></i></button></a>
+                            {% if mentor.social_url %}
+                            {% if 'facebook.com' in mentor.social_url %}
+                                <a href='{{mentor.social_url}}' class="book-time-social-url"><button class="book-time-globe"><i class="fa fa-facebook" aria-hidden="true"></i></button></a>
+                            {% elif 'fb.com' in mentor.social_url %}
+                                <a href='{{mentor.social_url}}' class="book-time-social-url"><button class="book-time-globe"><i class="fa fa-facebook" aria-hidden="true"></i></button></a>
+                            {% elif 'twitter.com' in mentor.social_url %}
+                                <a href='{{mentor.social_url}}' class="book-time-social-url"><button class="book-time-globe"><i class="fa fa-twitter" aria-hidden="true"></i></button></a>
+                                {% elif 'instagram.com' in mentor.social_url %}
+                                <a href='{{mentor.social_url}}' class="book-time-social-url"><button class="book-time-globe"><i class="fa fa-instagram" aria-hidden="true"></i></button></a>
+                                {% elif 'linkedin.com' in mentor.social_url %}
+                                <a href='{{mentor.social_url}}' class="book-time-social-url"><button class="book-time-globe"><i class="fa fa-linkedin" aria-hidden="true"></i></button></a>
+                            {% else %}
+                                <a href='{{mentor.social_url}}' class="book-time-social-url"><button class="book-time-globe"><i class="fa fa-link" aria-hidden="true"></i></button></a>
+                            {% endif %}    
+                            {% endif %}    
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+            <img src="{% static 'main/img/nomentorerror.png'%}" id="nomentorsfound" alt="no mentors found" style="display: none; margin-left: auto; margin-right: auto; max-width: 395px ; margin-bottom: 16px; margin-top: 8px;">
+        </div>
+    </div>
+    <script src="{% static 'main/js/new-age.js'%}" type="text/javascript" charset="utf-8"></script>
+    <script>
+        var mentor_card = document.getElementsByClassName("mentor-card");
+        for(var i=0; i<mentor_card.length; i++){
+            raw_design_field = mentor_card[i].getElementsByClassName("mentor_design_field")[0];
+            design_field = raw_design_field.textContent || raw_design_field.innerText;
+            if(design_field == "UX Design"){
+                mentor_card[i].className += " ux-bg";
+            }
+            else if(design_field == "Graphic Design"){
+                mentor_card[i].className += " graphic-bg";
+            }
+            else if(design_field == "Animation & Motion Graphics"){
+                mentor_card[i].className += " animation-bg";
+            }
+            else if(design_field == "Film & Videography"){
+                mentor_card[i].className += " film-bg";
+            }
+            else if(design_field == "Industrial Design"){
+                mentor_card[i].className += " industrial-bg";
+            }
+            else if(design_field == "Fashion & Textiles"){
+                mentor_card[i].className += " fashion-bg";
+            }
+        }
+        console.log(mentor_card);
+        function myFunction() {
+          // Declare variables
+          var input, filter, ul, li, a, i, j, txtValue, design_field, raw_design_field;
+          input = document.getElementById('myInput');
+          filter = input.value.toUpperCase();
+          ul = document.getElementById("mentor_list");
+          li = ul.getElementsByTagName('div');
+
+          //For Design Field Radio Button Group
+          var selected_field_of_design = $('input[name=design_field]:checked').val()
+          console.log(selected_field_of_design);
+          
+          //For Help Tags
+          var selected_help_tags = []
+          $.each($("input[name='help_tags']:checked"), function(){
+                selected_help_tags.push($(this).val());
+          });  
+          console.log(selected_help_tags)
+          var count=0;
+          // Loop through all list items, and hide those who don't match the search query
+            for (i = 0; i < li.length; i++) {
+                a = li[i];
+                txtValue = a.textContent || a.innerText;
+                
+                raw_design_field = a.getElementsByClassName("mentor_design_field")[0];
+                console.log(raw_design_field);
+                design_field = raw_design_field.textContent || raw_design_field.innerText;
+                console.log(design_field);
+                
+                raw_help_tags = a.getElementsByClassName("mentor_help_tags")[0];
+                help_tags = raw_help_tags.textContent || raw_help_tags.innerText;
+                console.log(help_tags);
+                
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    li[i].style.display = "";
+                } else {
+                    li[i].style.display = "none";
+                }
+                if(selected_field_of_design != "All" && li[i].style.display != "none"){
+                    if(design_field==selected_field_of_design){
+                        li[i].style.display = "";
+                    } else {
+                        li[i].style.display = "none";
+                    }
+                }
+                if(li[i].style.display != "none"){
+                    for(j=0; j<selected_help_tags.length; j++){
+                        if (help_tags.indexOf(selected_help_tags[j]) > -1) {
+                            li[i].style.display = "";
+                        } else {
+                            li[i].style.display = "none";
+                            break;
+                        }
+                    }
+                }
+                if (li[i].style.display != "none"){
+                    count=count+1;
+                }
+            }
+            var image = document.getElementById('nomentorsfound');
+            image.style.display = "none";
+            if(count == 0){
+                image.style.display = "";   
+            }
+        }
+    </script>
+{% endblock %}

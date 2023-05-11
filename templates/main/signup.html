@@ -1,0 +1,167 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<link href="{% static 'main/css/new-age.css' %}" rel="stylesheet" type="text/css">
+<nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+    <div class="container">
+        <a class="navbar-brand js-scroll-trigger" href="/"><img style="width:200px;"  src="{% static 'main/img/home/navbar-logo.png' %}" alt="Logo"></a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        Menu
+        <i class="fa fa-bars"></i>
+        </button>
+        {% if user.is_authenticated %}
+            {% if user.is_mentee %}
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ml-auto">
+                        <!-- <li class="nav-item">
+                            <a class="nav-link" href="{% url 'mentee_dashboard' %}">Dashboard</a>
+                        </li> -->
+                        <li class="nav-item active">
+                            <a class="nav-link" href="{% url 'browse' %}">Browse</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'resources' %}">Resources</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Hi, {{ user.menteeprofile.mentee_first_name }}
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{% url 'mentee_edit_profile' %}">Edit Profile</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                            </div>
+                            <!-- <a class="nav-link" href="{% url 'mentee_dashboard' %}">Hi, {{ user.menteeprofile.mentee_first_name }}</a> -->
+                        </li>
+                    </ul>
+                </div>  
+            {% endif %}
+            {% if user.is_mentor %}
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'mentor_dashboard' %}">Dashboard</a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="{% url 'browse' %}">Browse</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'resources' %}">Resources</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Hi, {{ user.mentorprofile.mentor_first_name }}
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{% url 'mentor_edit_profile' %}">Edit Profile</a>
+                                {% if user.mentorprofile.opt_out %}
+                                    <a class="dropdown-item" href="{% url 'opt_in' %}">Opt In</a>
+                                {% else %}
+                                    <a class="dropdown-item" href="{% url 'opt_out' %}">Opt Out</a>
+                                {% endif %}
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            {% endif %}
+        {% else %}
+            <div class="collapse navbar-collapse justify-content-center" id="navbarResponsive">
+                <ul class="navbar-nav ">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'home' %}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'resources' %}">Resources</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'about' %}">About Us</a>
+                    </li>
+                </ul>
+            </div>
+            <a href="{% url 'login' %}"><button style="color:#4752E8; border-color:#4752E8; background: white;">Login</button></a>
+            <a href="{% url 'signup' %}"><button>Sign Up</button></a>
+        {% endif %}
+    </div>
+</nav>
+<header class="masthead" id="masthead" style="background-color:white;">
+    <div class="container h-100">
+        <div class="row h-100">
+        <div class="col-lg-12 my-auto">
+            <div class="header-content mx-auto">
+                <h1 class="mb-5">Sign Up</h1>
+                <div class="row">
+                    <div class="col-md-6 mx-auto signup_masthead">
+                        <a href="{% url 'mentor_signup' %}" class="card mentor">
+                            <div class="overlay"></div>
+                            <div class="circle">
+                                <img style="max-width: 90%;" src="{% static 'main/img/mentor.png' %}">
+                            </div>
+                            <p>Mentor</p>
+                        </a>
+                    </div>
+                    <div class="col-md-6 mx-auto signup_masthead">
+                        <a href="{% url 'mentee_signup' %}" class="card mentee">
+                            <div class="overlay"></div>
+                            <div class="circle">
+                                <img style="max-width: 90%;" src="{% static 'main/img/mentee.png' %}">
+                            </div>
+                            <p>Mentee</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+</header>
+
+<section class="download" style="background-color: #313131;" id="social">
+    <div class="container">
+        <div class="row">
+        <div class="col-md-4 mx-auto" style="padding-bottom: 30px;">
+            <h1 class="section-heading" style="color: white;">Connect with us</h1><br>
+            <p style="color: white;">Or email us at</p>
+            <a href="mailto:cmdplusj@gmail.com"><p style="color: white; font-weight: bold;">cmdplusj@gmail.com</p></a>
+        </div>
+        <div class="col-md-4 mx-auto" style="padding-bottom: 30px;">
+            <h1 class="section-heading" style="color: white;">Social</h1><br>
+            <i class="fa fa-twitter fa-twitter-color social" aria-hidden="true"></i>
+            <i class="fa fa-facebook fa-facebook-color social" aria-hidden="true"></i>
+            <i class="fa fa-instagram fa-instagram-color social" aria-hidden="true"></i>
+        </div>
+        <div class="col-md-4 mx-auto">
+            <h1 class="section-heading" style="color: white;">Links</h1><br>
+            <a href="https://cmpdplusj.in/mentor" style="color: white;">Mentor Registration</a><br>
+            <a href="https://cmpdplusj.in/mentee" style="color: white;">Mentee Registration</a><br>
+            <a href="https://cmpdplusj.in/browse" style="color: white;">Browse</a><br>
+            <a href="https://cmpdplusj.in/about" style="color: white;">About Us</a><br>
+            <a href="https://docs.google.com/document/d/1JSeTnpjLCwpTHoa3Nq5U_0BSe0A9uYQYRvDbeX03q7w/edit?usp=sharing" style="color: white;">Code of Conduct</a>
+        </div>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="container">
+        <p>&copy; Developed with ❤ Team Cmd+J. All Rights Reserved.</p>
+        <ul class="list-inline">
+        <li class="list-inline-item">
+            <a href="#">Privacy</a>
+        </li>
+        <li class="list-inline-item">
+            <a href="#">Terms</a>
+        </li>
+        <li class="list-inline-item">
+            <a href="#">FAQ</a>
+        </li>
+        </ul>
+    </div>
+</footer>
+
+<script src="{% static 'main/js/new-age.js'%}" type="text/javascript" charset="utf-8"></script>
+
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %}Email Verification Sent{% endblock %}
+
+{% block content %}
+    <link href="{% static 'main/css/multistep.css' %}" rel="stylesheet" type="text/css">
+    <body style="background-color: #FDB748;">
+        <div class="row" style="justify-content: center;margin-top:60px;">
+            <div class="col-md-6" style="text-align: center;">
+              <img style="max-width: 160px;" src="{% static 'main/img/logo-short-black.png' %}" class="img-fluid img-center" alt="logo">
+            </div>
+          </div>
+        <div id="faltudiv">
+            <h1>Verify Your Account ⛳</h1>
+            <p >Check Your Email</p>
+            <p>Just one more step! We just need to verify your email address. We've sent a verification email with a ✨ magical link ✨ to {{ email }}.</p>
+            <p>Didn't get an email yet?</p>
+            <p>If you don't see an email from us in a few minutes, a few things could've happened:</p>
+            <ul>
+                <li><p>The email took a detour to your spam folder.</p></li>
+                <li><p>The email you typed-in had a typo. (Happens to the best of us.)/p></li>
+                <li><p>Accidentally gave your work or personal email instead of the one you intended.</p></li>
+            </ul>
+            <p>If you still haven't gotten the email though, drop us an email at cmdplusj@gmail.com and get right on it.</p>
+            <p style="text-align:center;">Back to <a href="{% url 'home' %}">Home</a></p>
+        </div>
+    </body>
+{% endblock %}

@@ -1,0 +1,60 @@
+body {
+    background-image: url('../img/bg.png');
+    background-repeat: no-repeat;
+    justify-content: center;
+}
+
+.main{
+    width:50%;
+    margin:auto;
+    margin-top: 50px;
+    padding:20px;
+    background-color: white;
+    border-radius: 10px;
+    text-align: center;
+}
+
+
+h1 {
+    font-family: 'Kumbh Sans', sans-serif;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 900;
+    color: black;
+}
+
+p {
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 0px;
+    color: black;
+    font-family: 'Poppins', 'sans-serif';
+}
+
+.old_logo {
+    margin:auto;
+    margin-top: 10%;
+    text-align: center;
+}
+
+
+
+@media (max-width: 650px){
+    .main{
+        width:80%;
+        margin: auto;
+        margin-top: 50px;
+        padding:5%;
+        background-color: white;
+        border-radius: 10px;
+        text-align: center;
+    }
+    h1 {
+        font-size: 20px;
+    }
+
+    p {
+        font-size: 12px;
+    }
+}
+

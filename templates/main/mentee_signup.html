@@ -1,0 +1,132 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %}Signup Mentee{% endblock %}
+
+
+{% block content %}
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="{% static 'main/css/multistep.css' %}" rel="stylesheet" type="text/css">
+<body style="background-color: #4752E8;">
+
+  <div class="row" style="justify-content: center;margin-top:60px;margin-bottom: 20px;">
+  <div class="col-md-6" style="text-align: center;">
+    <img style="width: 30%;" src="{% static 'main/img/logo-short-white.png' %}" class="img-fluid img-center" alt="logo">
+  </div>
+</div>
+<form id="regForm" method="post">
+  {% csrf_token %}
+  <h1>Create an account</h1>
+
+  {% if form.errors %}
+    {% for error in form.non_field_errors %}
+        <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+        </div>
+    {% endfor %}
+  {% endif %}
+
+  <div class="tab">
+    <div class="row">
+      <div class="col-md-6 col-xs-12 mx-auto">
+        <label for="id_first_name">First Name</label>
+        <p>{{ form.first_name }}</p>
+        <p>{{ form.first_name.errors }}</p>
+      </div>
+      <div class="col-md-6 col-xs-12 mx-auto">
+        <label for="id_last_name">Last Name</label>
+        <p>{{ form.last_name }}</p>
+        <p>{{ form.last_name.errors }}</p>
+      </div>
+    </div>
+    <label for="id_email">Email Address</label>
+    <p>{{ form.email }}</p>
+    <p>{{ form.email.errors }}</p>
+    <p id="email_errors" class="field_errors">Please enter a valid Email Address</p>
+    <label for="id_password1">Create Password</label>
+    <p>{{ form.password1 }}<a data-toggle="collapse" data-target="#password_help_text" aria-expanded="true"><span class="fa fa-ellipsis-v ellipsis"></span></a>
+      <p>{{ form.password1.errors }}</p>
+      <p id="password_errors_1" class="field_errors">Password should be atleast 8 characters long</p>
+      <p id="password_errors_2" class="field_errors">Passwords do not match</p>
+      <div class="collapse" id="password_help_text">
+        {{form.password1.help_text}}
+      </div>
+    </p>
+    <label for="id_password2">Confirm Password</label>
+    <p>{{ form.password2 }}</p>
+    <p>{{ form.password2.errors }}</p>
+    <!-- <p><input placeholder="First name..." type="text" name="first_name" maxlength="30" required="" id="id_first_name"></p>
+    <p><input type="text" placeholder="Last name..." name="last_name" maxlength="30" required="" id="id_last_name"></p>
+    <p><input placeholder="Email" type="email" name="email" maxlength="254" autofocus="" required="" id="id_email"></p>
+    <p><input placeholder="Password" type="password" name="password1" autocomplete="new-password" required="" id="id_password1"></p>
+    <p><input placeholder="Confirm Password" type="password" name="password2" autocomplete="new-password" required="" id="id_password2"></p> -->
+  </div>
+  <div class="tab">
+    <label for="id_last_name">Where do you currently work/study?</label>
+    <p>{{ form.place_of_work }}</p>
+    <p>{{ form.place_of_work.errors }}</p>
+    <label for="id_field_of_design">What field of design do you pursue/want to pursue?</label>
+    <p>{{ form.field_of_design }}</p>
+    <p>{{ form.field_of_design.errors }}</p>
+    <label for="id_url">Share a link to any online presence of yours. Social Media? Your portfolio? That's upto you!</label>
+    <p>{{ form.url }}</p>
+    <p>{{ form.url.errors }}</p>
+    <!-- <p><input placeholder="Place of Work/Study" type="text" name="place_of_work" maxlength="100" required="" id="id_place_of_work"></p>
+    <p><input placeholder="Field of Design" type="text" name="field_of_design" maxlength="100" required="" id="id_field_of_design"></p>
+    <p><input placeholder="URL" type="url" name="url" maxlength="200" required="" id="id_url"></p> -->
+  </div>
+  <div class="tab">
+    <label for="id_bio">How would you introduce yourself to a mentor? Remember, you can always edit it later… So dont overthink it!</label>
+    <p>{{ form.bio }}</p>
+    <p>{{ form.bio.errors }}</p>
+    <label for="id_question1">Answer any 3 of these prompts below so that your mentor has a better idea of who you are. Don't worry, they're super short and serve as conversation starters when you hop on a call with a mentor. Just fill in whatever comes to your mind! (50 words each)</label>
+    <p>{{ form.question1 }}</p>
+    <p>{{ form.question1.errors }}</p>
+    <p>{{ form.question1_answer }}</p>
+    <p>{{ form.question1_answer.errors }}</p>
+    <p>{{ form.question2 }}</p>
+    <p>{{ form.question2.errors }}</p>
+    <p>{{ form.question2_answer }}</p>
+    <p>{{ form.question2_answer.errors }}</p>
+    <p>{{ form.question3 }}</p>
+    <p>{{ form.question3.errors }}</p>
+    <p>{{ form.question3_answer }}</p>
+    <p>{{ form.question3_answer.errors }}</p>
+  </div>
+  <div class="tab">
+    <label for="id_tag">Pick up to 4 topics that you would like assistance with. These topics help us identify mentors that would be most helpful for you. As a mentee, you're looking for help with…</label>
+    <p>{{ form.tag.errors }}</p>
+    <p id="tag_errors" class="field_errors">You can only select upto 4 tags</p>
+    <ul id="id_tag" class="ks-cboxtags">
+      <li><input class="limit-checkbox" type="checkbox" name="tag" value="1" id="id_tag_0"><label for="id_tag_0">The job process</label></li>
+      <li><input class="limit-checkbox" type="checkbox" name="tag" value="2" id="id_tag_1"><label for="id_tag_1">Developing design skills</label></li>
+      <li><input class="limit-checkbox" type="checkbox" name="tag" value="3" id="id_tag_2"><label for="id_tag_2">Starting out in design</label></li>
+      <li><input class="limit-checkbox" type="checkbox" name="tag" value="4" id="id_tag_3"><label for="id_tag_3">Higher studies</label></li>
+      <li><input class="limit-checkbox" type="checkbox" name="tag" value="5" id="id_tag_4"><label for="id_tag_4">Portfolio feedback</label></li>
+      <li><input class="limit-checkbox" type="checkbox" name="tag" value="6" id="id_tag_5"><label for="id_tag_5">Career guidance</label></li>
+      <li><input class="limit-checkbox" type="checkbox" name="tag" value="7" id="id_tag_6"><label for="id_tag_6">Freelance</label></li>
+      <li><input class="limit-checkbox" type="checkbox" name="tag" value="8" id="id_tag_7"><label for="id_tag_7">Navigating design school</label></li>
+  </ul>
+    <!-- <p><textarea placeholder="Write About Yourself" name="bio" maxlength="2000" required="" id="id_bio" rows=8 cols=40 ></textarea></p> -->
+  </div>
+  <div style="overflow:auto;">
+    <div style="float:right;">
+      <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
+      <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
+    </div>
+  </div>
+  <!-- Circles which indicates the steps of the form: -->
+  <div style="text-align:center;margin-top:40px;">
+    <span class="step"></span>
+    <span class="step"></span>
+    <span class="step"></span>
+    <span class="step"></span>
+  </div>
+  <p style="text-align:center;padding-top: 20px;">Already a Mentee? Click <a href="{% url 'login' %}"> here to login</a></p>
+</form>
+
+<script src="{% static 'main/js/multistep.js'%}" type="text/javascript" charset="utf-8"></script>
+
+</body>
+</html>
+{% endblock %}

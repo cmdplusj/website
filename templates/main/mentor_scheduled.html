@@ -1,0 +1,149 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% load tz %}
+{% block title %}Mentor Dashboard{% endblock %}
+{% block style %}
+<style>
+    .xdsoft_inline{
+        margin-left: calc( ( 100% - 308px ) / 2 );
+    }
+</style>
+{% endblock %}
+{% block content %}
+{% if user.is_authenticated %}
+{% if user.is_mentor %}
+<link href="{% static 'main/css/new-age.css' %}" rel="stylesheet" type="text/css">
+<nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+    <div class="container">
+        <a class="navbar-brand js-scroll-trigger" href="/"><img style="width:200px;"  src="{% static 'main/img/home/navbar-logo.png' %}" alt="Logo"></a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fa fa-bars" style="font-size: 30px;"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'mentor_dashboard' %}">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'browse' %}">Browse</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'resources' %}">Resources</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Hi, {{ user.mentorprofile.mentor_first_name }}
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{% url 'mentor_edit_profile' %}">Edit Profile</a>
+                        {% if user.mentorprofile.opt_out %}
+                            <a class="dropdown-item" href="{% url 'opt_in' %}">Opt In</a>
+                        {% else %}
+                            <a class="dropdown-item" href="{% url 'opt_out' %}">Opt Out</a>
+                        {% endif %}
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                    </div>
+                </li>
+            </ul>
+        </div> 
+    </div>
+</nav>
+<div style="padding-top: 80px;"></div>
+<div class="row justify-content-center second-navbar" style="background: #16006F;padding-top: 10px;padding-bottom: 10px;">
+  <a href="{% url 'mentor_dashboard' %}"><p class="second-navbar-link">Pending</p></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="#"><p class="second-navbar-link active">Scheduled</p></a>
+</div>
+<h3 style="text-align: center;  padding-top: 30px; padding-bottom: 30px;">Scheduled Appointments</h3>
+<div style="width:80%;margin-left:10%;margin-right:10%;">
+    <div class="row" id="pending">
+        {% if appointments.count == 0 %}
+        <div class="col-12 text-center">
+            <br />
+            <br />
+            <img style="width:186px;"  src="{% static 'main/img/mentor-no.png' %}" alt="Logo">
+            <br />
+            <p>Hmm... Looks like you don’t have anyone who has booked time with you yet. Share on social media to spread the word and let people know.</p>
+            <br />
+            <a href="https://twitter.com/intent/tweet?url=https://cmdplusj.in{% url 'mentor_profile' mentor_name=user.mentorprofile.mentor_first_name mentor_id=user.mentorprofile.id %}&text=Book%201%3A1%20time%20with%20me%20on%20Command+J%21%20" type="button" class="btn btn-outline-primary">Twitter</a> &nbsp; 
+            <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://cmdplusj.in" type="button" class="btn btn-outline-primary">Linkedin</a>
+        </div>
+        {% endif %}
+        {% for a in appointments %}
+            {% if a.accepted_by_mentor is True %}
+            <div class="col-md-4 col-sm-6 col-xs-12 mx-auto justify-content-center" style="padding-left:4%;padding-right:4%">
+                <div class="app-card card">
+                    <p class="app_design_field" style="text-transform: uppercase;font-size: 14px;">{{ a.mentee.field_of_design }}</p>
+                    <p style="font-weight: bold;font-size: 18px;">{{ a.mentee.mentee_first_name }} {{ a.mentee.mentee_last_name }}</p>
+                    <p style="color:rgba(0, 0, 0, 0.36);font-size: 14px;">{{ a.mentee.place_of_work }}</p>
+                    <p class="timestamp">{{a.timestamp}}</p>
+                    <a href="{% url 'mentee_profile' mentee_name=a.mentee.mentee_first_name mentee_id=a.mentee.id %}" style="color: #8D98A3;" target="_blank">Read More ↗</a><br>
+                    <button class="app-time-re" data-toggle="modal" data-target="#myModal{{ a.id }}">
+                        Reschedule Time
+                    </button><br><br>
+                    <div class="modal" id="myModal{{ a.id }}">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                            <!-- Modal Header -->
+                                <form class="regForm" data-id="{{a.id}}" method="post">
+                                    {% csrf_token %}
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
+                                    <!-- Modal body -->
+                                    <div class="modal-body">
+                                        <h4 class="modal-title" style="text-align: center;width: 100%;padding-bottom: 20px;">Reschedule Time</h4>
+                                        <p><input type="hidden" name="appointment_id" required="" id="id_appointment_id" value={{ a.id }}></p>
+                                        <p style="text-align: center; padding-bottom: 10px;">Enter new Date and Time Below.</p>
+                                        <div class="input-group date" style="margin-left: calc( ( 100% - 308px ) / 2 )" id="datetimepicker1{{ a.id }}">
+                                            {{ form.timestamp }}
+                                        </div>
+                                        <script>
+                                        $(function () {
+                                            $("#datetimepicker1{{a.id}}").datetimepicker({
+                                                minDate: moment().format('DD/MM/YYYY'),
+                                                value: moment.unix('{{a.timestamp}}').format('DD/MM/YYYY HH:mm'),
+                                                format: 'd/m/Y H:i' ,
+                                                inline: true,
+                                                step: 30,
+                                            });
+                                        });
+                                        </script>
+                                    </div>
+                                    <!-- Modal footer -->
+                                    <div class="modal-footer">
+                                    <button type="submit" class="btn btn-success">Submit</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                <!-- <a href='/accept/invitation/{{ a.id }}'>Schedule Time</a><br><br> -->
+                
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+{% endif %}      
+{% endif %}
+{% endblock %}
+{% block script %}
+<script>
+    $(window).on('load', function() {
+        $('.timestamp').each(function() {
+            const timestamp = $(this).text();
+            console.log($(this).text());
+            const momentObject = moment.unix(timestamp);
+            $(this).html(
+                `Date: ${momentObject.format('DD-MM-YYYY (dddd)')} <br /> Time: ${momentObject.format('hh:mm A')} <br />`
+            );
+        })
+        $('.regForm').submit(function(e) {
+            $(`#myModal${$(this).data('id')}`).hide();
+            const date = $(this).find("input[name=timestamp]");
+            const entered_date = $(`#datetimepicker1${$(this).data('id')}`).val();
+            date.val(moment(entered_date, 'DD/MM/YYYY HH:mm').unix());
+        });
+    });
+</script>
+{% endblock %}

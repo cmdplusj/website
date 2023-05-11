@@ -1,0 +1,29 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+    
+    {% if user.is_authenticated %}
+        <a href="{% url 'logout' %}">logout</a><br>
+        {% if user.is_admin %}
+            <h2>Hello, Admin</h2>
+            {{ user.email }}<br>
+            {{ user.first_name }} {{ user.last_name }}<br><br><br>
+            {% for mentor in new_mentors %}
+                {{mentor.first_name}} {{mentor.last_name}}<br>
+                {{mentor.email}}<br>
+                {{mentor.mentorprofile.place_of_work}}<br>
+                {{mentor.mentorprofile.field_of_design}}<br>
+                {{mentor.mentorprofile.url}}<br>
+                {{mentor.mentorprofile.social_url}}<br>
+                <a href='/admin_dashboard/accept/{{ mentor.id }}'>accept</a><br>
+                <a href='/admin_dashboard/reject/{{ mentor.id }}'>reject</a><br><br><br><br>
+            {% endfor %}
+        {% else %}
+            <p>Not allowed to access admin dashboard.</p>
+        {% endif %}      
+    {% else %}
+        <p>Not allowed to access admin dashboard</p>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %}Invalid Activation Link{% endblock %}
+
+{% block content %}
+    <link href="{% static 'main/css/multistep.css' %}" rel="stylesheet" type="text/css">
+    <body style="background-color: #FDB748;">
+        <div id="faltudiv">
+            <h1>Invalid Account Activation Link</h1>
+            <p style="font-size: 20px;padding-bottom: 20px;">Try Creating Account Again</p>
+            <p style="text-align:center;">Back to <a href="{% url 'home' %}">Home</a></p>
+        </div>
+    </body>
+{% endblock %}

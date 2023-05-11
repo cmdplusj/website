@@ -1,0 +1,29 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<link href="{% static 'main/css/new-age.css' %}" rel="stylesheet" type="text/css">
+<header class="masthead" id="masthead404" style="background-color:white;">
+    <div class="container h-100">
+        <div class="row h-100">
+        <div class="col-lg-12 my-auto">
+            <div class="header-content mx-auto">
+                <div class="row">
+                    <div class="col-md-6 mx-auto signup_masthead">
+                        <img style="max-width: 70%;" src="{% static 'main/img/500.png' %}">
+                    </div>
+                    <div class="col-md-6 mx-auto signup_masthead" style="text-align: left;padding-top: 30px;">
+                        <h1 style="text-align: left;">Error 500</h1>
+                        <p style="text-align: left;padding-bottom: 10px;">Oops! Looks like something’s broken. We’re sorry. Really! It’s not you, its us. Give us a chance. We’ll make things right.</p>
+                        <a href="{% url 'home' %}"><button class="border-button">Go Back</button></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+</header>
+<script src="{% static 'main/js/new-age.js'%}" type="text/javascript" charset="utf-8"></script>
+
+{% endblock %}

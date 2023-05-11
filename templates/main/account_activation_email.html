@@ -1,0 +1,12 @@
+{% autoescape off %}
+You're one click away! <br /><br />
+
+We’re so glad you signed up, {{ user.first_name }}!<br/>
+Just click on the link below to complete registering for Command+J and we'll be good to go. Yay!<br />
+<br />
+
+https://{{ domain }}{% url 'activate' uidb64=uid token=token %}<br /> <br/>
+
+Thanks!<br/>
+Team Command+J.<br />
+{% endautoescape %}

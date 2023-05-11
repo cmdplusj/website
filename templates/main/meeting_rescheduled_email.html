@@ -1,0 +1,11 @@
+{% autoescape off %}
+Hey {{ mentee.mentee_first_name }}<br>
+<br>
+We regret to inform you that {{ mentor.mentor_first_name }} will have to reschedule your meeting on {{ old_date }} at {{ old_time }} GMT,as they would not be able to make it. Sincerest apologies for any inconvenience caused.<br>
+{{ mentor.mentor_first_name }} has moved the date of your call to {{ new_date }} at {{ new_time }} GMT to answer to the best of their abilities, all the questions you might have.<br>
+<br>
+We hope this will maintain the quality of the conversation, by making sure both are equally present!<br>
+<br>
+To a wonderful conversation!<br>
+Team Command+J<br>
+{% endautoescape %}

@@ -1,0 +1,24 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %}Wait For Approval{% endblock %}
+
+{% block content %}
+    <link href="{% static 'main/css/multistep.css' %}" rel="stylesheet" type="text/css">
+    <body style="background-color: #4752E8;">
+        <div class="row" style="justify-content: center;margin-top:60px;margin-bottom: 20px;">
+  <div class="col-md-6" style="text-align: center;">
+    <img style="max-width: 160px;" src="{% static 'main/img/logo-short-white.png' %}" class="img-fluid img-center" alt="logo">
+  </div>
+</div>
+        <div id="faltudiv">
+            <h1>Wait for Approval ✅</h1>
+            <p>You did it 🎉🎉🎉Thank you so much for signing up. Seriously, we know you’re probably busy and we honestly appreciate the effort. </p><br>
+            <p>On our end, we can guarantee you that, despite the emojis that we dropped here, we put lots of hard work in reviewing your application as professionally and effectively as possible. We’ll let you know by email as soon as that happens. It might take a few days, so we really appreciate your patience for now. </p><br>
+            <p>In the meantime, follow <b>@cmdplusj</b> on <a href="https://www.instagram.com/cmdplusj/" target="_blank">Instagram</a> and <a href="https://twitter.com/cmdplusj" target="_blank">Twitter</a> to keep up with our latest developments.</p>
+            <p>See you soon!</p>
+            <p>Team Cmd+J</p>
+            
+            <p style="text-align:center;">Back to <a href="{% url 'home' %}">Home</a></p>
+        </div>
+    </body>
+{% endblock %}

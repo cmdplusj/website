@@ -1,0 +1,76 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %}Mentor Dashboard{% endblock %}
+{% block content %}
+{% if user.is_authenticated %}
+{% if user.is_mentor %}
+<link href="{% static 'main/css/new-age.css' %}" rel="stylesheet" type="text/css">
+<nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+    <div class="container">
+        <a class="navbar-brand js-scroll-trigger" href="/"><img style="width:200px;"  src="{% static 'main/img/home/navbar-logo.png' %}" alt="Logo"></a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fa fa-bars" style="font-size: 30px;"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'mentor_dashboard' %}">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'browse' %}">Browse</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'resources' %}">Resources</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Hi, {{ user.mentorprofile.mentor_first_name }}
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{% url 'mentor_edit_profile' %}">Edit Profile</a>
+                        {% if user.mentorprofile.opt_out %}
+                            <a class="dropdown-item" href="{% url 'opt_in' %}">Opt In</a>
+                        {% else %}
+                            <a class="dropdown-item" href="{% url 'opt_out' %}">Opt Out</a>
+                        {% endif %}
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                    </div>
+                </li>
+            </ul>
+        </div> 
+    </div>
+</nav>
+<div style="padding-top: 80px;"></div>
+<div class="mentee-profile-div">
+    <div class="row">
+        <div class="col-md-6">
+            <p style="text-transform: uppercase;font-size: 14px;color: #16006F;">{{ mentee.field_of_design }}</p>
+            <p style="font-weight: bold;font-size: 18px;">{{ mentee.mentee_first_name }} {{ mentee.mentee_last_name }}</p>
+            <p style="color:rgba(0, 0, 0, 0.36);font-size: 14px;">{{ mentee.place_of_work }}</p>
+        </div>
+        <div class="col-md-6">
+            <a href='{{mentee.url}}'><button class="book-time-globe"><i class="fa fa-link" aria-hidden="true"></i></button></a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6" style="padding-top:10px">
+            <p style="color: #16006F;font-weight: bold;font-size: 18px;">️👋🏽 {{ mentee.mentee_first_name }} Says:</p>
+            <p >{{ mentee.bio }}</p>
+        </div>
+        <div class="col-md-6" style="padding-top:10px">
+            <p style="color: #16006F;font-weight: bold;font-size: 18px;">☕️ I Need Help With:</p>
+            <p style="color: rgba(0,0,0,0.36)">{% for tag in mentee.tag.all %}{{tag.tag}}{% if forloop.last %}.{% else %},&nbsp;{% endif %}{% endfor %}</p><br>
+            <p style="color: #16006F;font-weight: bold;font-size: 18px;">💫 Conversation Starters:</p>
+            <p style="font-weight: bold;">{{ mentee.question1 }}</p>
+            <p>{{ mentee.question1_answer }}</p><br>
+            <p style="font-weight: bold;">{{ mentee.question2 }}</p>
+            <p>{{ mentee.question2_answer }}</p><br>
+            <p style="font-weight: bold;">{{ mentee.question3 }}</p>
+            <p>{{ mentee.question3_answer }}</p>
+        </div>
+    </div>
+</div>
+{% endif %}      
+{% endif %}
+{% endblock %}
