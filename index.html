@@ -1,0 +1,360 @@
+    {% extends 'main/base.html' %}
+{% load static %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<link href="{main/static/main/css/new-age.css' %}" rel="stylesheet" type="text/css">
+<nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+    <div class="container">
+        <a class="navbar-brand js-scroll-trigger" href="/"><img style="width:200px;"  src="{main/static/main/img/home/navbar-logo.png' %}" alt="Logo"></a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fa fa-bars" style="font-size: 30px;"></i>
+        </button>
+        {% if user.is_authenticated %}
+            {% if user.is_mentee %}
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ml-auto">
+                        <!-- <li class="nav-item">
+                            <a style="float: right;" class="nav-link" href="{% url 'mentee_dashboard' %}">Dashboard</a>
+                        </li> -->
+                        <li class="nav-item">
+                            <a  style="float: right;" class="nav-link" href="{% url 'browse' %}">Browse</a>
+                        </li>
+                        <li class="nav-item">
+                            <a  style="float: right;" class="nav-link" href="{% url 'resources' %}">Resources</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a  style="float: right;" class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Hi, {{ user.menteeprofile.mentee_first_name }}
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a  style="float: right;" class="dropdown-item" href="{% url 'mentee_edit_profile' %}">Edit Profile</a>
+                                <div class="dropdown-divider"></div>
+                                <a  style="float: right;" class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                            </div>
+                            <!-- <a class="nav-link" href="{% url 'mentee_dashboard' %}">Hi, {{ user.menteeprofile.mentee_first_name }}</a> -->
+                        </li>
+                    </ul>
+                </div>  
+            {% endif %}
+            {% if user.is_mentor %}
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a  style="float: right;" class="nav-link" href="{% url 'mentor_dashboard' %}">Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a  style="float: right;" class="nav-link" href="{% url 'browse' %}">Browse</a>
+                        </li>
+                        <li class="nav-item">
+                            <a  style="float: right;" class="nav-link" href="{% url 'resources' %}">Resources</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a  style="float: right;" class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Hi, {{ user.mentorprofile.mentor_first_name }}
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a  style="float: right;" class="dropdown-item" href="{% url 'mentor_edit_profile' %}">Edit Profile</a>
+                                {% if user.mentorprofile.opt_out %}
+                                    <a  style="float: right;" class="dropdown-item" href="{% url 'opt_in' %}">Opt In</a>
+                                {% else %}
+                                    <a  style="float: right;" class="dropdown-item" href="{% url 'opt_out' %}">Opt Out</a>
+                                {% endif %}
+                                <div class="dropdown-divider"></div>
+                                <a  style="float: right;" class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            {% endif %}
+        {% else %}
+            <div class="collapse navbar-collapse justify-content-center" id="navbarResponsive">
+                <ul class="navbar-nav ">
+                    <li class="nav-item active">
+                        <a  style="float: right;" class="nav-link" href="{% url 'home' %}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a  style="float: right;" class="nav-link" href="{% url 'resources' %}">Resources</a>
+                    </li>
+                    <li class="nav-item">
+                        <a style="float: right;" class="nav-link" href="{% url 'about' %}">About Us</a>
+                    </li>
+                    <li class="nav-item navbar-button-links">
+                        <a style="float: right;" class="nav-link"  href="{% url 'login' %}">Login</a>
+                    </li>
+                    <li class="nav-item navbar-button-links">
+                        <a style="float: right;" class="nav-link"  href="{% url 'signup' %}">Sign Up</a>
+                    </li>
+                </ul>
+            </div>
+            <a href="{% url 'login' %}" class="navbar-buttons"><button style="color:#4752E8; border-color:#4752E8; background: white;">Login</button></a>
+            <a href="{% url 'signup' %}" class="navbar-buttons"><button>Sign Up</button></a>
+        {% endif %}
+    </div>
+</nav>
+<header class="masthead home_masthead" id="masthead">
+    <div class="container h-100">
+        <div class="row h-100">
+        <div class="col-lg-12 my-auto">
+            <div class="header-content mx-auto">
+                <h1 class="mb-5">Design Mentorship for India.</h1>
+                
+                <p>In a field as new as Design in India, a helping hand is ever so important and we at Command+J strive to bridge the gap between mentors and mentees, in an effort to foster growth in Design.<br>Oh, and one more thing, Command+J is free. And always will be.</p><br>
+                <a href="{% url 'mentee_signup' %}"><button style="margin-top: 5px;">&nbsp;&nbsp;&nbsp;&nbsp;Find a Mentor&nbsp;&nbsp;&nbsp;&nbsp;</button></a>
+                <a href="{% url 'mentor_details' %}"><button style="background-color: #FDB748;color:black;margin-top: 5px;">Become a Mentor</button></a>
+            </div>
+        </div>
+        </div>
+    </div>
+</header>
+
+<section class="download" style="padding-top: 80px; padding-bottom: 0; background-color: #ECEFF6;" id="mentor-showoff">
+    <div class="container" style="text-align: center;">
+        <div class="row">
+            <div class="col-md-12 mx-auto home-div-1">
+                <h1 class="section-heading">Find Someone Like You.</h1><br>
+                <p style="padding-bottom: 20px;">Without a personal or alumni network it’s easy to feel unseen in the kind of work you want to do. Find the Mentor who can help</p>
+                <a href="{% url 'browse' %}"><button type="button">Discover Mentors</button></a>
+            </div>
+        </div>  
+    </div>
+    <div id="img_cols" class="row" style="padding-top: 40px;margin-bottom: -5%;margin-left: 0;margin-right: 0;max-width: 100%;">
+        <div class="col-4 col-sm-2" style="padding: 0;" id="img-col-1">
+            <img id="img_col1" style="max-width: 100%;" src="{main/static/main/img/home/col1.png' %}">
+        </div>
+        <div class="col-4 col-sm-2" style="padding: 0;" id="img-col-2">
+            <img id="img_col2" style="max-width: 100%;" src="{main/static/main/img/home/col2.png' %}">
+        </div>
+        <div class="col-4 col-sm-2" style="padding: 0;" id="img-col-3">
+            <img id="img_col3" style="max-width: 100%;" src="{main/static/main/img/home/col3.png' %}">
+        </div>
+        <div class="col-4 col-sm-2" style="padding: 0;" id="img-col-4">
+            <img id="img_col4" style="max-width: 100%;" src="{main/static/main/img/home/col4.png' %}">
+        </div>
+        <div class="col-4 col-sm-2" style="padding: 0;" id="img-col-5">
+            <img id="img_col5" style="max-width: 100%;" src="{main/static/main/img/home/col5.png' %}">
+        </div>
+        <div class="col-4 col-sm-2" style="padding: 0;" id="img-col-6">
+            <img id="img_col6" style="max-width: 100%;" src="{main/static/main/img/home/col6.png' %}">
+        </div>    
+    </div>
+</section>
+
+<section class="download" style="padding-top: 80px;padding-bottom: 80px;background-color: white; box-shadow: 0 -40px 100px #313131;" id="what-is">
+    <div class="container" style="width: 90%;">
+        <div class="row">
+            <div class="col-md-6 mx-auto" style="padding-top: 6%;padding-right:5%;padding-left:5%;padding-bottom:5%;">
+                <h1 class="section-heading">But wait... what is ‘Mentorship’?</h1><br>
+                <p>Broadly speaking, mentorship can be defined as advising or helping a less-experienced person, so that they make progress towards their goals.</p><br>
+                <p>You know that advice your college senior gave you for getting an intern? That was mentorship.</p><br>
+                <p>Or when a friend made you realise you were being underpaid and should switch roles? That too.</p><br> 
+                <p>Or your elder sister helping you figure out your 5 year career plan? Yes! Even that!</p><br>
+                <p>Does the person in the example sound like you?</p><br>
+                <a href="#" style="color:#FDB748;font-style: italic;">Learn more about becoming a mentor -></a>
+            </div>
+            <div class="col-md-6 mx-auto">
+                <img style="max-width: 100%;" src="{main/static/main/img/home/106.png' %}">
+            </div>
+        </div>  
+    </div>
+</section>
+
+<section class="download" style=" background-color: #ECEFF6; padding-top: 80px; padding-bottom: 80px;" id="how-to-help">
+    <div class="container">
+        <h1 class="section-heading" style="text-align: center;padding-bottom: 5%;">How can a mentor help you?</h1>
+        <div class="row">
+            <div class="col-md-6 mx-auto" style="padding: 5%;">
+                <p>A great mentor can help clarify long-term goals, develop plans for advancing your career, or even train you on soft skills. There’s so much to learn.</p><br>
+                <p>But don’t just take our word for it. Listen to people who have used the platform!</p><br>
+            </div>
+            <div class="col-md-6 mx-auto" style="background-color: white;padding: 5%;">
+                <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="5000">
+                    <!-- Indicators -->
+                    <ol class="carousel-indicators">
+                      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                      <li data-target="#myCarousel" data-slide-to="1"></li>
+                      <li data-target="#myCarousel" data-slide-to="2"></li>
+                    </ol>
+                  
+                    <!-- Wrapper for slides -->
+                    <div class="carousel-inner">
+                      <div class="carousel-item active">
+                        <p style="font-size: 20px;">Upon finding Command+J and seeing profiles of creatives with similar interests I got keen on using the platform for my research as I am amidst a career change. I got a great sense of direction. Getting various perspectives was really helpful.</p><br>
+                     
+                        <p style="font-style: italic;font-size: 20px;">- Drashti, Student</p>
+                      </div>
+                  
+                      <div class="carousel-item">
+                        <p style="font-size: 20px;"> As an engineering kid, my cretivity only ever expressed itself in the form of sketches in the margins of my notebook. But after coming across Command+J by chance, I spoke to a few Graphic Designers and now plan on freelancing on the side. </p><br>
+                        
+                        <p style="font-style: italic;font-size: 20px;">- Jay, Management Trainee</p>
+                      </div>
+                  
+                      <div class="carousel-item">
+                        <p style="font-size: 20px;">When I got into design, despite having some sort of design education. I had SO MANY questions. Talking to people who were in my shoes 1-2 years back really helped. I wish more people spoke about these kinda things online! </p><br>
+                        
+                        <p style="font-style: italic;font-size: 20px;">- Nishita, Junior Designer</p>
+                      </div>
+                    </div>
+                  
+                    <!-- Left and right controls -->
+                    <a class="carousel-control-prev" href="#myCarousel" data-slide="prev">
+                        <span class="carousel-control-prev-icon"></span>
+                    </a>
+                    <a class="carousel-control-next" href="#myCarousel" data-slide="next">
+                        <span class="carousel-control-next-icon"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: 4%; ">
+            <a href="{% url 'mentee_signup' %}"><button>Meet Your Mentor</button></a>
+        </div>
+    </div>
+</section>
+
+<section class="download" style=" background-color: #ECEFF6;padding-bottom: 70px;" id="how-it-works">
+    <div class="container">
+        <h1 class="section-heading" style="text-align: center;padding-bottom: 5%;">Here's how it works.</h1>
+        <div class="row">
+            <div class="col-12 col-sm-4 mx-auto" style="padding-right:5%;padding-left:5%;padding-bottom: 20px;">
+                <img class="circle-how-it-works" src="{main/static/main/img/home/c1.png' %}">
+                <p style="font-weight: bold;">1. Find</p><br>
+                <p>You can discover amazing mentors by searching by topics like “Portfolio Feedback”</p>
+            </div>
+            <div class="col-12 col-sm-4 mx-auto" style="padding-right:5%;padding-left:5%;padding-bottom: 20px;">
+                <img class="circle-how-it-works" src="{main/static/main/img/home/c2.png' %}">
+                <p style="font-weight: bold;">2. Schedule</p><br>
+                <p>Once you connect with your mentor, they’ll schedule a call based on their availability.</p>
+            </div>
+            <div class="col-12 col-sm-4 mx-auto" style="padding-right:5%;padding-left:5%;padding-bottom: 20px;">
+                <img class="circle-how-it-works" src="{main/static/main/img/home/c3.png' %}">
+                <p style="font-weight: bold;">3. Talk</p><br>
+                <p>You’ll get email reminders, where you can share topics you would like to discuss.</p>
+            </div>
+        </div>  
+    </div>
+</section>
+
+<section class="download" style="background-color: #4752E8;padding-bottom: 80px;padding-top: 80px;" id="faq">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 mx-auto" style="padding-right:5%;padding-left:5%;">
+                <h1 class="section-heading" style="color: white;text-align: center;">FAQs</h1>
+                <p style="color: white;padding-top: 16px;padding-bottom: 35px;text-align: center;">Have a question and don’t see it here? <a style="color: white;text-decoration: underline;" href="mailto:cmdplusj@gmail.com"> Reach out to us</a></p>
+                <div class="accordion" id="accordionExample">
+                    <div class="card">
+                      <a class="collapsed" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        <div class="faq-header card-header" id="headingOne">
+                          Is this 100% Free?
+                        </div>
+                      </a>
+                      <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                        <div class="card-body">
+                          Command+J a completely free and open to all! The only cost here is some enthusiasm from your side and following our <a href="https://docs.google.com/document/d/1JSeTnpjLCwpTHoa3Nq5U_0BSe0A9uYQYRvDbeX03q7w/edit?usp=sharing"> code of conduct</a>.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <a class="collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        <div class="faq-header card-header" id="headingTwo">
+                          What if I don’t want to get on a video call?
+                        </div>
+                      </a>
+                      <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                        <div class="card-body">
+                          We highly recommend using a video call to talk to each other for the first time. It helps build a bond and is efficient. On the day of the call, we'll be CCing you and the mentor, in an email thread where y'all can discuss the mode of communication that works for both of you.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <a class="collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        <div class="faq-header card-header" id="headingThree">
+                          How do I stay in touch with my mentor?
+                        </div>
+                      </a>
+                      <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                        <div class="card-body">
+                          Let's consider 2 scenarios -<br>
+                            1. You could have your first call with your mentor and decide on a path forward together through regularly scheduled calls.<br>
+                            2. You could reach out to each other as and when you want to - to catch up or otherwise.<br> 
+                            Of course, not all mentor/mentee relationships need to last long. Sometimes it’s okay to just talk once if there’s no need for continuity.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <a class="collapsed" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                        <div class="faq-header card-header" id="headingFour">
+                          What if I didn’t find a mentor in the same field as me?
+                        </div>
+                      </a>
+                      <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionExample">
+                        <div class="card-body">
+                          Even if there's a mismatch in hard skills or career trajectory, you can still learn a lot from a mentor. We encourage all mentees to read between the lines while reading the bios of mentors for the same reason! Sometimes, you find common ground in similar experiences.
+                        </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="download" style=" background-color: #ECEFF6;text-align: center;padding-bottom: 70px;" id="faltu-ka-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 mx-auto" style="padding-right:5%;padding-left:5%;">
+                <h1 class="section-heading">Open for all!</h1><br>
+                <p>Completely free, now and forever. Anyone can sign up to be a mentee!</p><br>
+                <a href="{% url 'mentee_signup' %}"><button type="button">&nbsp;&nbsp;&nbsp;&nbsp;Sign Up&nbsp;&nbsp;&nbsp;&nbsp;</button></a>
+            </div>
+        </div>  
+    </div>
+</section>
+
+<section class="download" style="background-color: #313131;" id="social">
+    <div class="container">
+        <div class="row">
+        <div class="col-md-4 mx-auto" style="padding-bottom: 30px;">
+            <h1 class="section-heading" style="color: white;">Connect with us</h1><br>
+            <p style="color: white;">Or email us at</p>
+            <a href="mailto:cmdplusj@gmail.com"><p style="color: white; font-weight: bold;">cmdplusj@gmail.com</p></a>
+        </div>
+        <div class="col-md-4 mx-auto" style="padding-bottom: 30px;">
+            <h1 class="section-heading" style="color: white;">Social</h1><br>
+            <a href="http://instagram.com/cmdplusj"><i class="fa fa-instagram fa-instagram-color social" aria-hidden="true"></i></a>
+            <a href="https://twitter.com/cmdplusj"><i class="fa fa-twitter fa-twitter-color social" aria-hidden="true"></i></a>
+            <a href="https://medium.com/cmd-j"><i class="fa fa-medium fa-medium-color social" aria-hidden="true"></i></a>
+            <a href="https://www.facebook.com/cmdplusj"><i class="fa fa-facebook fa-facebook-color social" aria-hidden="true"></i></a>
+        </div>
+        <div class="col-md-4 mx-auto">
+            <h1 class="section-heading" style="color: white;">Links</h1><br>
+            <a href="https://cmpdplusj.in/mentor" style="color: white;">Mentor Registration</a><br>
+            <a href="https://cmpdplusj.in/mentee" style="color: white;">Mentee Registration</a><br>
+            <a href="https://cmpdplusj.in/browse" style="color: white;">Browse</a><br>
+            <a href="https://cmpdplusj.in/about" style="color: white;">About Us</a><br>
+            <a href="https://docs.google.com/document/d/1JSeTnpjLCwpTHoa3Nq5U_0BSe0A9uYQYRvDbeX03q7w/edit?usp=sharing" style="color: white;">Code of Conduct</a>
+        </div>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="container">
+        <p>&copy; Developed with ❤ Team Cmd+J. All Rights Reserved.</p>
+        <ul class="list-inline">
+        <li class="list-inline-item">
+            <a href="#">Privacy</a>
+        </li>
+        <li class="list-inline-item">
+            <a href="#">Terms</a>
+        </li>
+        <li class="list-inline-item">
+            <a href="#">FAQ</a>
+        </li>
+        </ul>
+    </div>
+</footer>
+
+<script src="{main/static/main/js/new-age.js'%}" type="text/javascript" charset="utf-8"></script>
+
+{% endblock %}
